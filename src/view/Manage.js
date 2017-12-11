@@ -1,32 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
-import { Button } from '../component';
+import { Button, Avatar, ContactItem } from '../component';
+
+import style from '../style/style';
 
 class Manage extends Component {
   render() {
     const { navigate, contacts, remove } = this.props;
     return (
-      <View>
-        <Text>Manage View</Text>
-        {contacts.map((contact) => (
-          <View key={contact.id}>
-            <Text>{contact.name}</Text>
-            <Text>{contact.work}</Text>
-            <Text>{contact.home}</Text>
-            <Text>{contact.email}</Text>
-            <Button
-              label="Edit Contact"
-              onPress={() => navigate('add-contact', {...contact, isEdit: true })}
-            />
-            <Button
-              label="Delete Contact"
-              onPress={() => remove(contact)}
-            />
+      <View style={[style.contentContainer, style.manageContainer]}>
+        <Image
+          blurRadius={1}
+          resizeMode='cover'
+          style={style.blurImageBg}
+          source={require('../assets/images/nannabg.jpg')}
+        />
+        <View style={style.manageContactsUserProfile}>
+          <Avatar/>
+          <Text style={style.manageContactsUserProfileName}>
+            Nanna Bryndis
+          </Text>
+          <View style={[style.contactsTab, { marginTop: 20 }]}>
+            <View style={[style.activeTab, style.contactsTabItem]}>
+              <Text>Contacts</Text>
+            </View>
+            <View style={[style.inActiveTab, style.contactsTabItem]}><Text>Favorites</Text></View>
           </View>
-        ))}
-        <Button label="Create new Contact" onPress={() => navigate('add-contact')}/>
+        </View>
+        <View style={style.contactsList}>
+          {contacts.map((contact) =>
+            <ContactItem key={contact.id} contact={contact} navigate={navigate} remove={remove}/>
+          )}
+        </View>
+        <Button
+          label="+"
+          onPress={() => navigate('add-contact')}
+          style={style.createContactButton}
+          textStyle={{ fontSize: 48, fontWeight: 'bold', color: '#FFF' }}
+        />
       </View>
     );
   }

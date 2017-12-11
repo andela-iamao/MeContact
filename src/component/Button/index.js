@@ -5,12 +5,18 @@ import { TouchableHighlight, Text } from 'react-native';
 const Button = (props) => {
   return (
     <TouchableHighlight {...props}>
-      <Text>{props.label}</Text>
+      <Text style={props.textStyle}>{props.label}</Text>
     </TouchableHighlight>
   );
 };
 
+Button.defaultProps = {
+  textStyle: {}
+};
+
+
 Button.propTypes = {
+  textStyle: PropTypes.object,
   label: PropTypes.string
 };
 

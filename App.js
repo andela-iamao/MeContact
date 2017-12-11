@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View } from 'react-native';
+import { AsyncStorage, View, Platform } from 'react-native';
+
 import { Home, Contact, Manage, AddContact } from './src/view';
+
+import { AppBar } from './src/component';
+
+import style from './src/style/style';
 
 async function store(data) {
   return await AsyncStorage.setItem('contacts', JSON.stringify(data));
@@ -16,10 +21,8 @@ export default class App extends Component<{}> {
     this.state = { active: 'home', props: {}, contacts: [] };
   }
 
-  componentDidMount() {
-    return get().then((contacts) => {
-      this.setState({ contacts: contacts ? JSON.parse(contacts): [] });
-    });
+  componentWillMount() {
+    return get().then((contacts) => this.setState({ contacts: contacts ? JSON.parse(contacts): [] }));
   }
 
   changeActive(active, props) {
@@ -51,7 +54,9 @@ export default class App extends Component<{}> {
       case 'home':
         return <Home navigate={this.changeActive.bind(this)} />;
       case 'contact':
-        return <Contact navigate={this.changeActive.bind(this)} />;
+        return <Contact
+          {...this.state.props}
+          navigate={this.changeActive.bind(this)} />;
       case 'manage':
         return <Manage
           contacts={this.state.contacts}
@@ -72,7 +77,8 @@ export default class App extends Component<{}> {
 
   render() {
     return (
-      <View>
+      <View style={style.defaultContainer}>
+        {Platform.OS !== 'ios' && <AppBar navigate={this.changeActive.bind(this)}/>}
         {this.renderView()}
       </View>
     );
