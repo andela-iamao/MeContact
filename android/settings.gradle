@@ -1,0 +1,3 @@
+rootProject.name = 'MeContact'
+
+include ':app'
