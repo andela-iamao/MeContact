@@ -96,8 +96,7 @@ export default StyleSheet.create({
   },
   contactsTab: { flexDirection:'row', alignItems: 'center', backgroundColor: '#EFEFEF' },
   contactsTabItem: { padding: 10, width: (width / 2) - 5, alignItems: 'center' },
-  activeTab: {
-  },
+  activeTab: {},
   inActiveTab: { backgroundColor: '#C0C0C0' },
   contactContainer: { marginTop: 0},
   contactsList: { marginTop: 30, alignItems: 'center', padding: 10 },

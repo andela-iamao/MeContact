@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { Input, Button } from '../component';
 
+import * as contactAction from '../action/contacts.action';
+
 import style from '../style/style';
 
+@connect(
+  (state) => ({ contacts: state.contacts }),
+  (dispatch) => ({ contactAction: bindActionCreators(contactAction, dispatch)})
+)
 class AddContact extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: props.name || '',
-      home: props.home || '',
-      work: props.work || '',
-      email: props.email || '',
-      id: props.id
-    };
+    this.state = props.contacts.editing || { name: '', home: '', work: '', email: '' };
+  }
+
+  componentWillMount() {
+    const { isCreating, editing } = this.props.contacts;
+    if (!isCreating && !editing) {
+      this.props.navigate('manage');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { isCreating, editing } = nextProps.contacts;
+    if (!isCreating && !editing) {
+      this.props.navigate('manage');
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.contactAction.clearEdit();
+    this.props.contactAction.clearSelected();
+    this.props.contactAction.stopCreation();
   }
 
   onChange(field, text) {
@@ -24,7 +46,9 @@ class AddContact extends Component {
 
   render() {
     const { name, home, email, work } = this.state;
-    const { add, isEdit, update } = this.props;
+    const { editing } = this.props.contacts;
+    const { createContact, updateContact } = this.props.contactAction;
+
     const contact = { name, home, email, work };
     return(
       <View style={[style.homeContainer, { flex: 1 }]}>
@@ -52,11 +76,11 @@ class AddContact extends Component {
             onChangeText={(text) => this.onChange('email', text)}/>
         </View>
         <Button
-          label={`${isEdit ? 'Update' : 'Add'} Contact`}
-          style={[style.contactPageEditButton, style.addContactButton]}
           textStyle={{ color: '#FFF' }}
-          onPress={() => isEdit ?
-            update({ ...contact, id: this.state.id }) : add(contact)}
+          label={`${editing ? 'Update' : 'Add'} Contact`}
+          style={[style.contactPageEditButton, style.addContactButton]}
+          onPress={() =>
+            editing ? updateContact({ ...contact, id: editing.id }) : createContact(contact)}
         />
       </View>
     );

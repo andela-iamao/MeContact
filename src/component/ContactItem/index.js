@@ -6,11 +6,10 @@ import { Button } from '../';
 import style from '../../style/style';
 
 const ContactItem = (props) => {
-  const { contact, navigate, remove } = props;
+  const { contact, navigate, remove, update, del, select } = props;
   return (
     <View style={style.contactListItem}>
-      <View
-        style={[style.contactListItemInfo, { flexDirection: 'row' }]}>
+      <View style={[style.contactListItemInfo, { flexDirection: 'row' }]}>
         <View>
           <Image
             onPress={() => navigate('contact')}
@@ -19,28 +18,14 @@ const ContactItem = (props) => {
           />
         </View>
         <View style={{ marginLeft: 10 }}>
-          <TouchableOpacity onPress={() => {
-            debugger;
-            return navigate('contact', { contact, remove, navigate })
-          }}>
-          <Text
-            style={style.contactListItemName}
-          >
-            {contact.name}
-          </Text>
+          <TouchableOpacity onPress={() => select(contact)}>
+            <Text style={style.contactListItemName}>{contact.name}</Text>
           </TouchableOpacity>
           <Text>{contact.home}</Text>
         </View>
       </View>
       <View style={style.contactListItemAction}>
-        <Button
-          label="Edit"
-          onPress={() => navigate('add-contact', {...contact, isEdit: true })}
-        />
-        <Button
-          label="Delete"
-          onPress={() => remove(contact)}
-        />
+
       </View>
     </View>
   );

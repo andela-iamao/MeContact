@@ -5,6 +5,7 @@ import { View, Text, Image } from 'react-native';
 import { Logo, Button } from '../component';
 import style from '../style/style';
 
+
 class Home extends Component {
   render() {
     const { navigate } = this.props;
