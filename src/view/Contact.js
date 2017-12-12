@@ -68,7 +68,7 @@ class Contact extends Component {
         <View style={style.contactPageDeleteContainer}>
           <Button
             label="Delete"
-            onPress={() => w(contact)}
+            onPress={() => deleteContact(contact)}
             style={style.contactPageDeleteButton}
             textStyle={{ fontSize: 18, color: '#FFF' }}/>
         </View>
