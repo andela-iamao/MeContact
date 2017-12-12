@@ -1,4 +1,8 @@
+import React from 'react';
 import { AppRegistry } from 'react-native';
-import App from './App';
+import { Provider } from 'react-redux';
+import Application from './App';
 
-AppRegistry.registerComponent('MeContact', () => App);
+import store from './src/store';
+
+AppRegistry.registerComponent('MeContact', () =>  Application);

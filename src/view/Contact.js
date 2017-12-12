@@ -1,15 +1,40 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { Button } from '../component';
 
+import * as contactAction from '../action/contacts.action';
+
 import style from '../style/style';
 
+@connect(
+  (state) => ({ contacts: state.contacts }),
+  (dispatch) => ({ contactAction: bindActionCreators(contactAction, dispatch)})
+)
 class Contact extends Component {
+  componentWillMount() {
+    if (!this.props.contacts.selected) {
+      this.props.navigate('manage');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.contacts.selected) {
+      this.props.navigate('manage');
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.contactAction.clearSelected();
+    this.props.contactAction.stopCreation();
+  }
 
   render() {
-    const { contact, navigate } = this.props;
+    const { contacts: { selected: contact }, navigate } = this.props;
+    const { editContact, deleteContact } = this.props.contactAction;
     return (
       <View style={{ flex: 1 }}>
         <View style={style.contactContainer}>
@@ -23,7 +48,7 @@ class Contact extends Component {
               label="Edit"
               style={style.contactPageEditButton}
               textStyle={{ fontSize: 18, color: '#FFF' }}
-              onPress={() => navigate('add-contact', {...contact, isEdit: true })}
+                onPress={() => editContact(contact)}
             />
           </View>
         </View>
@@ -43,6 +68,7 @@ class Contact extends Component {
         <View style={style.contactPageDeleteContainer}>
           <Button
             label="Delete"
+            onPress={() => deleteContact(contact)}
             style={style.contactPageDeleteButton}
             textStyle={{ fontSize: 18, color: '#FFF' }}/>
         </View>
