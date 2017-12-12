@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Image } from 'react-native';
+
+import style from '../../style/style';
 
 const Logo = () => {
   return (
-    <View>
-      <Text>MeContact</Text>
+    <View style={style.headerLogoContainer}>
+      <Image
+        source={require('../../assets/images/me-contact-logo.png')}
+        style={style.headerLogo}
+      />
     </View>
   );
 };

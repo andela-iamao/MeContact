@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { Input, Button } from '../component';
+
+import style from '../style/style';
 
 class AddContact extends Component {
   constructor(props) {
@@ -22,29 +24,37 @@ class AddContact extends Component {
 
   render() {
     const { name, home, email, work } = this.state;
-    const { add, navigate, isEdit, update } = this.props;
+    const { add, isEdit, update } = this.props;
     const contact = { name, home, email, work };
     return(
-      <View>
-        <Button label="Back" onPress={() => navigate('manage')}/>
-        <Input
-          value={name}
-          placeholder="Firstname Lastname"
-          onChangeText={(text) => this.onChange('name', text)}/>
-        <Input
-          value={home}
-          placeholder="Home number"
-          onChangeText={(text) => this.onChange('home', text)}/>
-        <Input
-          value={work}
-          placeholder="Work number"
-          onChangeText={(text) => this.onChange('work', text)}/>
-        <Input
-          value={email}
-          placeholder="Email"
-          onChangeText={(text) => this.onChange('email', text)}/>
+      <View style={[style.homeContainer, { flex: 1 }]}>
+        <Text style={style.addContactHeader}>Add a new contact</Text>
+        <View style={{ marginTop: 20, marginBottom: 40 }}>
+          <Input
+            value={name}
+            placeholder="Name"
+            style={style.inputStyle}
+            onChangeText={(text) => this.onChange('name', text)}/>
+          <Input
+            value={home}
+            style={style.inputStyle}
+            placeholder="Home number"
+            onChangeText={(text) => this.onChange('home', text)}/>
+          <Input
+            value={work}
+            style={style.inputStyle}
+            placeholder="Work number"
+            onChangeText={(text) => this.onChange('work', text)}/>
+          <Input
+            value={email}
+            placeholder="Email"
+            style={style.inputStyle}
+            onChangeText={(text) => this.onChange('email', text)}/>
+        </View>
         <Button
           label={`${isEdit ? 'Update' : 'Add'} Contact`}
+          style={[style.contactPageEditButton, style.addContactButton]}
+          textStyle={{ color: '#FFF' }}
           onPress={() => isEdit ?
             update({ ...contact, id: this.state.id }) : add(contact)}
         />
